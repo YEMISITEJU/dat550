@@ -1,0 +1,21 @@
+A Siamese Network is a neural network architecture that consists of two or more identical subnetworks, which share the same set of weights and are connected by a common output layer. This architecture is commonly used for tasks that involve finding similarity or dissimilarity between two input samples.
+
+In our implementation, a Siamese network was trained using extracted faces from training videos. The objective of the network was to differentiate faces extracted from deep fake videos from faces from real videos. Transfer learning was employed to extract features from the images by experimenting with three pre-trained models, namely VGG-16, Resnet, and Xception. To make the pre-trained model more specific to deep fake detection, the final layer of the model was replaced with two trainable Dense layers that were fine-tuned using a triple loss function.
+
+The Siamese network architecture is illustrated in the figure below. Each subnetwork takes an input sample (anchor, negative, positive), applies the same set of convolutional or fully connected layers, and generates three feature vectors as output. The three feature vectors are then passed through a distance metric layer, which computes a distance or similarity score.
+
+The triple loss function used requires three input instances: an anchor instance, a positive instance, and a negative instance. The goal is to minimize the distance between the anchor instance and the positive instance while maximizing the distance between the anchor instance and the negative instance, with a specified margin in between. The loss function is described using the Euclidean distance function:
+
+L(A, P, N) = max(‖f(A) - f(P)‖² - ‖f(A) - f(N)‖² +α , 0)
+
+where A is the anchor input, P is a positive input of the same class as the anchor, N is a negative input of a different class from the anchor, α is the margin between positive and negative pairs, and ƒ is an embedding.
+
+The distance layer used calculates the cosine similarity between Anchor images and the positive images: ap distance, and Anchor images and the negative images: an distance.
+
+We found that utilizing a low learning rate in combination with increasing the number of training epochs led to better results. We also used Adam and SGD as part of the parameter tuning, where Adam optimizer with a learning rate of 0.001 performed best.
+
+In conclusion, increased training epochs and optimizing the parameters improved the performance of our Siamese network in detecting deep fake videos.
+
+
+
+
