@@ -1,0 +1,27 @@
+﻿Convolutional Neural Networks (CNNs) are a type of deep learning algorithm that have been widely used for image and video processing tasks. CNNs can be used for deepfake detection because they are able to automatically learn and extract relevant features from images and videos. 
+There are several different approaches to using CNNs for deepfake detection. In this project I try to use CNN to do frame-level analysis which involves analyzing individual frames captured from deepfake videos and real videos to detect inconsistencies and artifacts that may indicate a deepfake.
+
+
+The architecture of the CNN I use for deepfake detection consists of multiple layers.
+Input layer: This is where the extracted face image data are fed into the network.
+Convolutional layers: These layers use convolutional filters to extract features from the input data. Each filter applies a mathematical operation to a small patch of the input data, which is then moved across the entire image. This allows the network to identify patterns and features that are important for deepfake detection.
+
+
+Activation layers: These layers apply a non-linear function to the output of the convolutional layers. This helps to introduce non-linearity into the network and make it more capable of capturing complex patterns and relationships in the data.
+
+
+Pooling layers: These layers downsample the output of the activation layers by taking the maximum value within a small region of the data. This helps to reduce the spatial dimensions of the data and make the network more computationally efficient.
+
+
+Fully connected layers: These layers take the flattened output of the pooling layers and apply a series of linear transformations to it. This allows the network to learn high-level representations of the input data that are useful for deepfake detection.
+
+
+Output layer: This is the final layer of the network, which produces a prediction of whether the input data is real or fake.
+
+
+To train a CNN for deepfake detection, a large dataset of both real and fake images or videos is required. The network is then trained using a process called backpropagation, which involves iteratively adjusting the weights of the network to minimize a loss function that measures the difference between the predicted outputs and the true labels of the data. The training process typically involves multiple epochs, where the entire dataset is fed through the network multiple times, and can take several hours or days depending on the size of the dataset and the complexity of the network architecture. 
+
+
+Due to limited computational resources, I used the videos in train_sample_videos folder from the deepfake detection challenge preview dataset (https://www.kaggle.com/competitions/deepfake-detection-challenge/data) to train my CNN model. The train_sample_videos folder contains 400 videos of which 323 are deepfake videos. I captured 10 frames from each video and then extracted faces from each frame using MTCNN from facenet_pytorch package. The extracted faces of training videos are saved in jpeg format and into two folders called "0_REAL_faces" and "1_FAKE_faces". 
+Images in "0_REAL_faces" and "1_FAKE_faces" folders are loaded using tf.keras.utils.image_dataset_from_directory into two separate classes representing real and fake face images, splitting 70% to training set and 30% to validation set. The CNN model is fitted on the dataset in different epochs.  
+Another larger dataset "dfdc_train_part_10", which consists of 2813 deepfake videos and 379 real videos, from Deepfake Detection Challenge is downloaded and used as a test dataset for the CNN model. I have captured 10 frames from each video in the test dataset and extracted faces to jpeg images in the same way as the training dataset. The CNN model after 3 epochs appears to achieve the best prediction performance. If I set the prediction value larger than 0.8 to be classified as "fake", the model can identify 87.9% of fake face images while identifies wrongly 26.3% of real face images as "fake". This gives a precision value of 0.77, recall value of 0.879 and F1 score of 0.82. However, the prediction performance can vary when the epochs value changes and when the prediction is summed on a video instead of on a single image.
