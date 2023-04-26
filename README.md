@@ -3,7 +3,7 @@ How to reproduce the results
 
 LSTM:
 
-Download the dataset (link in the report)
+Download the dataset (https://ai.facebook.com/datasets/dfdc/)
 
 Run pre_processing_yy.py (edit the path to file directory)
 
